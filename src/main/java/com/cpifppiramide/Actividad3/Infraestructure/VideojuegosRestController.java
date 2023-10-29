@@ -31,10 +31,13 @@ public class VideojuegosRestController {
     Videojuego save(@RequestBody Videojuego videojuego){
         return this.videojuegosUseCases.save(videojuego);
     }
+
+    @PutMapping(path = "/videojuegos/{nombre}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Videojuego update(@PathVariable String nombre, @RequestBody Videojuego videojuego){ return this.videojuegosUseCases.update(nombre, videojuego);}
+
     @DeleteMapping("/videojuegos/{nombre}")
     String delete(@PathVariable String nombre){
         return this.videojuegosUseCases.delete(nombre);
     }
-
 
 }

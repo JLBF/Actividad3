@@ -22,7 +22,7 @@ public class VideojuegosUseCases {
     }
 
     public Videojuego save(Videojuego videojuego){
-        return this.save(videojuego);
+        return this.videojuegosRepository.save(videojuego);
     }
 
     public Videojuego update(String nombre, Videojuego videojuego){
