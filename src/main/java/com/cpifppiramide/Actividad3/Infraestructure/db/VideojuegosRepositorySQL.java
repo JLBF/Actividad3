@@ -10,7 +10,11 @@ import java.util.List;
 
 public class VideojuegosRepositorySQL implements VideojuegosRepository {
 
-    Connection con = ConnectionManager.getConnection();
+   private Connection con;
+
+   public VideojuegosRepositorySQL(String db){
+       con = ConnectionManager.getConnection(db);
+   }
     @Override
     public List<Videojuego> getAll() {
         List<Videojuego> videojuegos = new ArrayList<>();

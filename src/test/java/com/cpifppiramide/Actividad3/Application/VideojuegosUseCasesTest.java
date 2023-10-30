@@ -2,14 +2,13 @@ package com.cpifppiramide.Actividad3.Application;
 
 import com.cpifppiramide.Actividad3.Domain.Videojuego;
 import com.cpifppiramide.Actividad3.Infraestructure.db.VideojuegosRepositorySQL;
-import context.ConnectionManagerTest;
-import org.junit.jupiter.api.AfterAll;
+import context.ConnectionManager;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -19,11 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class VideojuegosUseCasesTest {
 
-    Connection con = ConnectionManagerTest.getConnection();
     private VideojuegosUseCases videojuegosUseCases;
+    private static Connection con;
 
     public VideojuegosUseCasesTest(){
-        this.videojuegosUseCases = new VideojuegosUseCases(new VideojuegosRepositorySQL());
+        this.videojuegosUseCases = new VideojuegosUseCases(new VideojuegosRepositorySQL("videojuegostest"));
+    }
+
+    @BeforeAll
+    public static void conection(){
+        con = ConnectionManager.getConnection("videojuegostest");
     }
 
     @AfterEach
@@ -45,9 +49,12 @@ class VideojuegosUseCasesTest {
     @Test
     public void getVideojuego() {
 
+        Videojuego videojuego =  new Videojuego("Minecraft", "test", 12.1);
+        videojuegosUseCases.save(videojuego);
+
         String nombre = "Minecraft";
-        Videojuego videojuego = videojuegosUseCases.getVideojuego(nombre);
-        assertNull(videojuego);
+        Videojuego videojuegoGet = videojuegosUseCases.getVideojuego(nombre);
+        assertEquals("Minecraft", videojuegoGet.getNombre());
 
     }
 
@@ -77,6 +84,12 @@ class VideojuegosUseCasesTest {
 
     @Test
     public void delete() {
+        Videojuego videojuego = new Videojuego("Diablo IV", "RPG", 55.55);
+        videojuegosUseCases.save(videojuego);
 
+        videojuegosUseCases.delete("Diablo IV");
+        List<Videojuego> lista = videojuegosUseCases.getAll();
+
+        assertEquals(0, lista.size());
     }
 }

@@ -14,7 +14,7 @@ public class VideojuegosRestController {
     private VideojuegosUseCases videojuegosUseCases;
 
     public VideojuegosRestController(){
-        this.videojuegosUseCases = new VideojuegosUseCases(new VideojuegosRepositorySQL());
+        this.videojuegosUseCases = new VideojuegosUseCases(new VideojuegosRepositorySQL("videojuegos"));
     }
 
     @GetMapping("/videojuegos")
